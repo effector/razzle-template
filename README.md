@@ -1,8 +1,9 @@
 # Razzle TypeScript Example
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](http://prettier.io) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](http://prettier.io) [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) [![](https://img.shields.io/badge/feature/slices-1.0-blue)](https://featureslices.dev/v1.0)
 
 ## How to use
+
 Download the example [or clone the whole project](https://github.com/jaredpalmer/razzle.git):
 
 ```bash
@@ -18,12 +19,13 @@ yarn start
 ```
 
 ## Idea behind the example
-This is an of how to use Razzle with [TypeScript](https://github.com/Microsoft/TypeScript). 
-In `razzle.config.js`, we locate the part of the webpack configuration 
-that is running `babel-loader` and swap it out for `ts-loader`. 
+
+This is an of how to use Razzle with [TypeScript](https://github.com/Microsoft/TypeScript).
+In `razzle.config.js`, we locate the part of the webpack configuration
+that is running `babel-loader` and swap it out for `ts-loader`.
 Additionally, we make sure Razzle knows how to resolve `.ts` and `.tsx` files.
 
-Lastly, we also need to modify our Jest configuration to handle typescript files. 
+Lastly, we also need to modify our Jest configuration to handle typescript files.
 Thus we add `ts-jest` and `@types/jest` to our dev dependencies. Then we augment Razzle's default jest setup by adding a field in our `package.json`.
 
 ```json
@@ -54,10 +56,10 @@ Thus we add `ts-jest` and `@types/jest` to our dev dependencies. Then we augment
 }
 ```
 
-The `tslint.json` and `tsconfig.json` are taken from Microsoft's official 
+The `tslint.json` and `tsconfig.json` are taken from Microsoft's official
 [TypeScript-React-Starter](https://github.com/Microsoft/TypeScript-React-Starter).
 
-Note: You do not techincally _need_ to fully replace `babel-loader` with 
+Note: You do not techincally _need_ to fully replace `babel-loader` with
 `ts-loader` to use TypeScript. Both TS and Babel transpile ES6 code,
 so when you run both webpack loaders you are making Razzle do twice the work. From our testing,
 this can make HMR extremely slow on larger apps. Thus, this example overwrites
@@ -66,4 +68,5 @@ this can make HMR extremely slow on larger apps. Thus, this example overwrites
 ```
 "^.+\\.(js|jsx)$": "<rootDir>/node_modules/razzle/config/jest/babelTransform.js",
 ```
+
 This will continue to transform .js files through babel.

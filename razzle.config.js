@@ -3,9 +3,9 @@ const path = require('path');
 module.exports = {
   plugins: [
     {
-      // useBabel: true,
       name: 'typescript',
       options: {
+        useBabel: true,
         forkTsChecker: {
           tslint: false,
         },

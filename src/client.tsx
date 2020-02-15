@@ -6,7 +6,7 @@ import { fork } from 'effector/fork';
 import { rootDomain } from 'lib/effector';
 import { Application } from './application';
 
-const scope = fork(rootDomain);
+const scope = fork(rootDomain, { values: INITIAL_STATE });
 
 hydrate(
   <BrowserRouter>

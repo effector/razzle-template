@@ -26,6 +26,7 @@ export const server = express()
         <Application root={scope} />
       </StaticRouter>,
     );
+    const storesValues = serialize(scope);
     res.send(
       `<!doctype html>
     <html lang="">
@@ -47,6 +48,9 @@ export const server = express()
     </head>
     <body>
         <div id="root">${markup}</div>
+        <script>
+          window.INITIAL_STATE = ${JSON.stringify(storesValues, null, 2)}
+        </script>
     </body>
 </html>`,
     );

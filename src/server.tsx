@@ -2,7 +2,9 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import { fork, serialize } from 'effector/fork';
 
+import { rootDomain } from 'lib/effector';
 import { Application } from './application';
 
 let assets: any;
@@ -16,10 +18,12 @@ export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', (req: express.Request, res: express.Response) => {
+    const scope = fork(rootDomain);
+
     const context = {};
     const markup = renderToString(
       <StaticRouter context={context} location={req.url}>
-        <Application />
+        <Application root={scope} />
       </StaticRouter>,
     );
     res.send(

@@ -19,6 +19,7 @@
     "strictNullChecks": true,
     "strict": true,
     "pretty": true,
+    "baseUrl": "src",
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2016"
   },

@@ -18,3 +18,10 @@ $counterValue
   .on(getRandomInitialFx.done, (_, { result }) => result)
   .on(incrementClicked, (value) => value + 1)
   .on(resetClicked, () => 0);
+
+getRandomInitialFx.use(
+  () =>
+    new Promise((resolve) =>
+      setTimeout(resolve, 200, Math.floor(Math.random() * 300)),
+    ),
+);

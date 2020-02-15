@@ -1,14 +1,16 @@
 import React from 'react';
-import { hydrate } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { fork } from 'effector/fork';
+import { fork, hydrate } from 'effector/fork';
 
 import { rootDomain } from 'lib/effector';
 import { Application } from './application';
 
-const scope = fork(rootDomain, { values: INITIAL_STATE });
+hydrate(rootDomain, { values: INITIAL_STATE });
 
-hydrate(
+const scope = fork(rootDomain);
+
+ReactDOM.hydrate(
   <BrowserRouter>
     <Application root={scope} />
   </BrowserRouter>,

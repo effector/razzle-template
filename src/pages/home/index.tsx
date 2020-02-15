@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useEvent, useStore } from 'effector-react/ssr';
+
+import { START } from 'lib/effector';
 import * as model from './model';
 
 export const HomePage = () => {
@@ -27,3 +29,5 @@ export const HomePage = () => {
     </section>
   );
 };
+
+HomePage[START] = model.pageLoaded;

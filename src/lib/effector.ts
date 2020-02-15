@@ -9,3 +9,5 @@ export const {
   createEvent,
   createStore,
 } = rootDomain;
+
+export const START = `☄️/start-event`;

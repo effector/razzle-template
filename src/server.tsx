@@ -2,10 +2,12 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { fork, serialize } from 'effector/fork';
+import { matchRoutes } from 'react-router-config';
+import { fork, serialize, allSettled } from 'effector/fork';
 
-import { rootDomain } from 'lib/effector';
+import { forward, clearNode, rootDomain, START } from 'lib/effector';
 import { Application } from './application';
+import { ROUTES } from './pages/routes';
 
 let assets: any;
 
@@ -17,8 +19,29 @@ syncLoadAssets();
 export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  .get('/*', (req: express.Request, res: express.Response) => {
+  .get('/*', async (req: express.Request, res: express.Response) => {
+    const pageEvents = matchRoutes(ROUTES, req.url)
+      .map((match) =>
+        match.route.component ? match.route.component[START] : undefined,
+      )
+      .filter(Boolean);
+
+    const startServer = rootDomain.createEvent();
+
+    if (pageEvents.length > 0) {
+      forward({ from: startServer, to: pageEvents });
+    }
+
     const scope = fork(rootDomain);
+
+    try {
+      await allSettled(startServer, {
+        scope,
+        params: undefined,
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     const context = {};
     const markup = renderToString(
@@ -49,9 +72,11 @@ export const server = express()
     <body>
         <div id="root">${markup}</div>
         <script>
-          window.INITIAL_STATE = ${JSON.stringify(storesValues, null, 2)}
+          window.INITIAL_STATE = ${JSON.stringify(storesValues)}
         </script>
     </body>
 </html>`,
     );
+
+    clearNode(startServer);
   });

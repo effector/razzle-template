@@ -1,4 +1,4 @@
-import * as effector from 'effector';
+import * as effector from 'effector-logger';
 export * from 'effector';
 
 export const rootDomain = effector.createDomain('rootDomain');

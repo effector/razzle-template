@@ -1,4 +1,4 @@
-import { createEvent, createStore, createEffect, forward } from 'lib/effector';
+import { createEffect, createEvent, createStore, guard } from 'lib/effector';
 
 export const pageLoaded = createEvent();
 export const incrementClicked = createEvent<any>();
@@ -9,9 +9,12 @@ const getRandomInitialFx = createEffect<void, number>();
 export const $counterValue = createStore<number>(0);
 export const $pagePending = getRandomInitialFx.pending;
 
-forward({
-  from: pageLoaded,
-  to: getRandomInitialFx,
+const $shouldGetNumber = $counterValue.map((value) => value === 0);
+
+guard({
+  source: pageLoaded,
+  filter: $shouldGetNumber,
+  target: getRandomInitialFx,
 });
 
 $counterValue

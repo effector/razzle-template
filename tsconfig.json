@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowUnreachableCode": false,
-    "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "baseUrl": "src",
     "downlevelIteration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -11,26 +11,25 @@
     "lib": ["es6", "es2015", "es2017", "dom"],
     "module": "esnext",
     "moduleResolution": "Node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": false,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "strict": true,
     "pretty": true,
-    "baseUrl": "src",
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2016"
+    "target": "es2016",
+    "types": ["react", "jest", "typePatches", "node", "webpack-env"]
   },
   "exclude": [
-    "node_modules",
     "build",
     "scripts",
     "acceptance-tests",
     "webpack",
     "jest",
     "razzle.config.js"
-  ],
-  "types": ["typePatches", "node", "webpack-env"]
+  ]
 }

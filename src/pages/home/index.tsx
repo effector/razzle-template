@@ -1,8 +1,16 @@
 import * as React from 'react';
 import { useEvent, useStore } from 'effector-react/ssr';
+import styled from 'styled-components';
 
 import { START } from 'lib/effector';
 import * as model from './model';
+
+const Button = styled.button`
+  background-color: transparent;
+  border: 1px solid lightblue;
+  padding: 1rem;
+  border-radius: 1rem;
+`;
 
 export const HomePage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
@@ -19,12 +27,12 @@ export const HomePage = () => {
       <h2>Hello world! Effector SSR example</h2>
       <div>
         <h4>Counter value: {counterValue}</h4>
-        <button disabled={pagePending} onClick={increment}>
+        <Button disabled={pagePending} onClick={increment}>
           Increment
-        </button>
-        <button disabled={pagePending} onClick={reset}>
+        </Button>
+        <Button disabled={pagePending} onClick={reset}>
           Reset
-        </button>
+        </Button>
       </div>
     </section>
   );

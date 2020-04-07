@@ -22,7 +22,7 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2016",
-    "types": ["react", "jest", "typePatches", "node", "webpack-env"]
+    "types": ["react", "jest", "node", "webpack-env"]
   },
   "exclude": [
     "build",

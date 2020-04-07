@@ -3454,14 +3454,7 @@ effector-dom@^0.0.11:
   resolved "https://registry.yarnpkg.com/effector-dom/-/effector-dom-0.0.11.tgz#32af0d685925b032990fca1594708193f3b62ca0"
   integrity sha512-9tnQkd8hSVnL33HwQJSI7L43ZaEbMKTtof3Pfm8pBptrlrS4xlqccaiHHuPqVyAesJkFLrFT24ezMGqg7BYDGQ==
 
-effector-inspector@^0.2.0-4:
-  version "0.2.0-4"
-  resolved "https://registry.yarnpkg.com/effector-inspector/-/effector-inspector-0.2.0-4.tgz#62d2adadd65343bfaef0889fcad3b153950d9c7e"
-  integrity sha512-uStEZ+QPlxIo9k0NY5b9pxPAo1nL0Vh29dTKUEEp5PQ/iHDpqnKpXj/3Do8XISfZer3FkxjlXK9bAj9tDd/UOQ==
-  dependencies:
-    effector-dom "^0.0.11"
-
-effector-inspector@^0.2.2:
+effector-inspector@^0.2.1, effector-inspector@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/effector-inspector/-/effector-inspector-0.2.2.tgz#ceb0087241bd73e3065d32ff24525efef7dd028a"
   integrity sha512-SdjbbWiibRB65B02aEPax9V5Rt41hFc5phWYcVbvCrf2oiEaQHYUnG/0vzjG982xY/WfE00DqpyAjONOmbGumQ==
@@ -3469,25 +3462,25 @@ effector-inspector@^0.2.2:
     effector-dom "^0.0.11"
 
 effector-logger@^0.5.0-8:
-  version "0.5.0-8"
-  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.5.0-8.tgz#7bb2c25b190a9393d121868b71f346d778296c83"
-  integrity sha512-pL++7i2UgpR3BuuSL7I7gbV1aO1BljTmK8nJHOYozPCOWOtQXgjTI8bDHD8T3B6twaCtJDTo2zfEBFjibOW6Zw==
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.5.0.tgz#18bdbfb4b5ceea480ff4ff2a7fed1283c264eda3"
+  integrity sha512-Ke8Jur6cxMb2/IpefscV2CF5cmqM+GdO3kr8I5hdcBAZpjLJXDpD+Zt7Cjw1H8jue801CjOxfauf2Ot6+LcshA==
   dependencies:
     "@types/just-debounce-it" "^1.1.0"
     just-debounce-it "^1.1.0"
     set-value "^3.0.1"
   optionalDependencies:
-    effector-inspector "^0.2.0-4"
+    effector-inspector "^0.2.1"
 
 effector-react@^20.6.0:
-  version "20.6.0"
-  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.6.0.tgz#3b4f0829f2ed23b513715d1b3d089cb1551b29dd"
-  integrity sha512-oxotJPQMP1gor54yGhgx/VrdXWP+bRVq8rEiKgzHaZHB7l0k9kjxghFzRHf+SkTkJjtjd2pVmRv3Plz22EOUSA==
+  version "20.6.3"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.6.3.tgz#f276a3478886b3be487cc1e1bc4ab29938b6af4e"
+  integrity sha512-3cONEJA9TXL4ofVYoNqO8kf6KxA8hKs+S46ZE1Enjzq4PB8AmDuMKlbXdwEidaj4ti4aS2TmsEhI5OTLluKB0A==
 
 effector@^20.11.5:
-  version "20.11.5"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-20.11.5.tgz#7fe946449af77fca5ffbd1f380f55eb7fc8fa6d5"
-  integrity sha512-nD6Nq/lYgRVKTtLeULGDwZfRdVblR8Ub62Ev5OYBpONYnpyROYL5wRjmXA70AXPBjQY90ntxr1yhilC8sGPmZw==
+  version "20.13.5"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-20.13.5.tgz#fa7cd6388f906860468a8fa77879460b9838773f"
+  integrity sha512-VZS0hspR8BloJyln11k8HdPzUIIxflT3jre3k5hWPRF8bDrfI9VVKg+TqgDPAIejwWV+JonaxydFiE37i0HfwQ==
   dependencies:
     symbol-observable "^1.2.0"
 
@@ -8893,9 +8886,9 @@ set-value@^2.0.0, set-value@^2.0.1:
     split-string "^3.0.1"
 
 set-value@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/set-value/-/set-value-3.0.1.tgz#52c82af7653ba69eb1db92e81f5cdb32739b9e95"
-  integrity sha512-w6n3GUPYAWQj4ZyHWzD7K2FnFXHx9OTwJYbWg+6nXjG8sCLfs9DGv+KlqglKIIJx+ks7MlFuwFW2RBPb+8V+xg==
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/set-value/-/set-value-3.0.2.tgz#74e8ecd023c33d0f77199d415409a40f21e61b90"
+  integrity sha512-npjkVoz+ank0zjlV9F47Fdbjfj/PfXyVhZvGALWsyIYU/qrMzpi6avjKW3/7KeSU2Df3I46BrN1xOI1+6vW0hA==
   dependencies:
     is-plain-object "^2.0.4"
 

@@ -1,14 +1,37 @@
 import express from 'express';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
+
+import * as React from 'react';
+import * as ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { matchRoutes } from 'react-router-config';
+import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
+
 import { fork, serialize, allSettled } from 'effector/fork';
 
-import { forward, clearNode, rootDomain, START } from 'lib/effector';
+import { rootDomain, guard, Event, START } from 'lib/effector';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
+
+const serverStarted = rootDomain.createEvent<{
+  req: express.Request;
+  res: express.Response;
+}>();
+
+const requestHandled = serverStarted.map(({ req }) => req);
+
+const routesMatched = requestHandled.map((req) =>
+  matchRoutes(ROUTES, req.url)
+    .map(lookupStartEvent)
+    .filter(Boolean),
+);
+
+for (const { component } of ROUTES) {
+  guard({
+    source: routesMatched,
+    filter: (matchedEvents) => matchedEvents.includes(component[START]),
+    target: component[START],
+  });
+}
 
 let assets: any;
 
@@ -21,24 +44,12 @@ export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
-    const pageEvents = matchRoutes(ROUTES, req.url)
-      .map((match) =>
-        match.route.component ? match.route.component[START] : undefined,
-      )
-      .filter(Boolean);
-
-    const startServer = rootDomain.createEvent();
-
-    if (pageEvents.length > 0) {
-      forward({ from: startServer, to: pageEvents });
-    }
-
     const scope = fork(rootDomain);
 
     try {
-      await allSettled(startServer, {
+      await allSettled(serverStarted, {
         scope,
-        params: undefined,
+        params: { req, res },
       });
     } catch (error) {
       console.log(error);
@@ -62,7 +73,6 @@ export const server = express()
     stream.pipe(res, { end: false });
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
-      clearNode(startServer);
     });
   });
 
@@ -92,4 +102,11 @@ function htmlEnd(storesValues: {}): string {
         </script>
     </body>
 </html>`;
+}
+
+function lookupStartEvent<P, E>(match: MatchedRoute<P>): Event<E> | undefined {
+  if (match.route.component) {
+    return match.route.component[START];
+  }
+  return undefined;
 }

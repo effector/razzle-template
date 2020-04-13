@@ -25,6 +25,10 @@ $counterValue
 getRandomInitialFx.use(
   () =>
     new Promise((resolve) =>
-      setTimeout(resolve, 200, Math.floor(Math.random() * 300)),
+      setTimeout(
+        resolve,
+        Math.floor(Math.random() * 300),
+        Math.floor(Math.random() * 300),
+      ),
     ),
 );

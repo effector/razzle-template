@@ -13,6 +13,8 @@ yarn install
 yarn start
 ```
 
+- Use `import {} from "lib/effector"` instead of `"effector"`. All units should be created in the root domain.
+
 ## Structure
 
 https://sova.dev/application-structure

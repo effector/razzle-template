@@ -76,6 +76,7 @@ export const server = express()
     stream.pipe(res, { end: false });
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
+      sheet.seal();
       console.info(
         '[PERF] sent page at %sms',
         (performance.now() - timeStart).toFixed(2),

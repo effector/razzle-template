@@ -13,7 +13,7 @@ yarn install
 yarn start
 ```
 
-- Use `import {} from "lib/effector"` instead of `"effector"`. All units should be created in the root domain.
+- Use `import {} from "effector-root"` instead of `"effector"`. All units should be created in the root domain.
 
 ## Structure
 
@@ -28,4 +28,4 @@ https://sova.dev/application-structure
 - `src/pages/:page-name/index.tsx` — View for single specific page
 - `src/pages/:page-name/model.ts` — Business-logic for specific page, that contains single level logic layer
 - `src/lib` — Internal libraries
-- `src/lib/effector` — Methods of the effector binded to application domain
+- `src/lib/effector` — START event name to use as page property

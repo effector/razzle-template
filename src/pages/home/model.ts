@@ -1,4 +1,4 @@
-import { createEffect, createEvent, createStore, guard } from 'lib/effector';
+import { createEffect, createEvent, createStore, guard } from 'effector-root';
 
 export const pageLoaded = createEvent();
 export const incrementClicked = createEvent<any>();

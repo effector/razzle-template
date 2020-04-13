@@ -8,12 +8,13 @@ import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled } from 'effector/fork';
+import { root, guard, Event } from 'effector-root';
 
-import { rootDomain, guard, Event, START } from 'lib/effector';
+import { START } from 'lib/effector';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
-const serverStarted = rootDomain.createEvent<{
+const serverStarted = root.createEvent<{
   req: express.Request;
   res: express.Response;
 }>();
@@ -47,7 +48,7 @@ export const server = express()
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
     const timeStart = performance.now();
-    const scope = fork(rootDomain);
+    const scope = fork(root);
 
     try {
       await allSettled(serverStarted, {

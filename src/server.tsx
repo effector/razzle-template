@@ -1,3 +1,4 @@
+import { performance } from 'perf_hooks';
 import express from 'express';
 
 import * as React from 'react';
@@ -44,6 +45,8 @@ export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
+    console.info('[REQUEST] %s %s', req.method, req.url);
+    const timeStart = performance.now();
     const scope = fork(rootDomain);
 
     try {
@@ -73,6 +76,10 @@ export const server = express()
     stream.pipe(res, { end: false });
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
+      console.info(
+        '[PERF] sent page at %sms',
+        (performance.now() - timeStart).toFixed(2),
+      );
     });
   });
 

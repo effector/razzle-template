@@ -1,12 +1,11 @@
 import express from 'express';
 
 // this require is necessary for server HMR to recover from error
-// tslint:disable-next-line:no-var-requires
 let app = require('./server').server;
 
 if (module.hot) {
   module.hot.accept('./server', () => {
-    console.log('🔁  HMR Reloading `./server`...');
+    console.info('🔁  HMR Reloading `./server`...');
     try {
       app = require('./server').server;
     } catch (error) {
@@ -16,14 +15,16 @@ if (module.hot) {
   console.info('✅  Server-side HMR Enabled!');
 }
 
-const port = parseInt(process.env.PORT ?? '3000', 10);
+const port = Number.parseInt(process.env.PORT ?? '3000', 10);
 
-export default express()
+const server = express()
   .use((req, res) => app.handle(req, res))
-  .listen(port, (err: Error) => {
-    if (err) {
-      console.error(err);
+  .listen(port, (error: Error | undefined) => {
+    if (error) {
+      console.error(error);
       return;
     }
-    console.log(`> Started on port ${port}`);
+    console.info(`> Started on port ${port}`);
   });
+
+export default server;

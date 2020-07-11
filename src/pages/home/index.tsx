@@ -2,15 +2,8 @@ import * as React from 'react';
 import { useEvent, useStore } from 'effector-react/ssr';
 import styled from 'styled-components';
 
-import { START } from 'lib/effector';
+import { assignStart } from 'lib/effector';
 import * as model from './model';
-
-const Button = styled.button`
-  background-color: transparent;
-  border: 1px solid lightblue;
-  padding: 1rem;
-  border-radius: 1rem;
-`;
 
 export const HomePage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
@@ -20,7 +13,9 @@ export const HomePage = () => {
   const counterValue = useStore(model.$counterValue);
   const pagePending = useStore(model.$pagePending);
 
-  React.useEffect(() => pageLoaded(), []);
+  React.useEffect(() => {
+    pageLoaded({});
+  }, [pageLoaded]);
 
   return (
     <section>
@@ -38,4 +33,11 @@ export const HomePage = () => {
   );
 };
 
-HomePage[START] = model.pageLoaded;
+assignStart(HomePage, model.pageLoaded);
+
+const Button = styled.button`
+  background-color: transparent;
+  border: 1px solid lightblue;
+  padding: 1rem;
+  border-radius: 1rem;
+`;

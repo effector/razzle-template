@@ -1,8 +1,11 @@
+import React from 'react';
 import { createEffect, createEvent, createStore, guard } from 'effector-root';
 
-export const pageLoaded = createEvent();
-export const incrementClicked = createEvent<any>();
-export const resetClicked = createEvent<any>();
+type ButtonClick = React.MouseEvent<HTMLButtonElement>;
+
+export const pageLoaded = createEvent<Record<string, string>>();
+export const incrementClicked = createEvent<ButtonClick>();
+export const resetClicked = createEvent<ButtonClick>();
 
 const getRandomInitialFx = createEffect<void, number>();
 

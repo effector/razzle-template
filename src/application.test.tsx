@@ -3,9 +3,8 @@ import { render } from 'react-dom';
 import { fork } from 'effector/fork';
 
 import { root } from 'effector-root';
-import { Application } from './application';
-
 import { MemoryRouter } from 'react-router-dom';
+import { Application } from './application';
 
 describe('<App />', () => {
   test('renders without exploding', () => {

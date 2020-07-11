@@ -1,4 +1,4 @@
-import { createInspector } from 'effector-inspector';
+// import { createInspector } from 'effector-inspector';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -18,7 +18,7 @@ ReactDOM.hydrate(
   <BrowserRouter>
     <Application root={scope} />
   </BrowserRouter>,
-  document.getElementById('root'),
+  document.querySelector('#root'),
 );
 
 if (module.hot) {

@@ -8,9 +8,9 @@ import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled } from 'effector/fork';
-import { root, guard, Event } from 'effector-root';
+import { root, forward, Event } from 'effector-root';
 
-import { START } from 'lib/effector';
+import { getStart } from 'lib/effector';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
@@ -22,28 +22,36 @@ const serverStarted = root.createEvent<{
 const requestHandled = serverStarted.map(({ req }) => req);
 
 const routesMatched = requestHandled.map((req) =>
-  matchRoutes(ROUTES, req.url)
-    .map(lookupStartEvent)
-    .filter(Boolean),
+  matchRoutes(ROUTES, req.url).filter(lookupStartEvent),
 );
 
 for (const { component } of ROUTES) {
-  guard({
-    source: routesMatched,
-    filter: (matchedEvents) => matchedEvents.includes(component[START]),
-    target: component[START],
-  });
+  const startPageEvent = getStart(component);
+
+  if (startPageEvent) {
+    const matchedRoute = routesMatched.filterMap(
+      (routes) =>
+        routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
+    );
+
+    forward({
+      from: matchedRoute.map((route) => route.match.params),
+      to: startPageEvent,
+    });
+  }
 }
 
-let assets: any;
+let assets: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const syncLoadAssets = () => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   assets = require(process.env.RAZZLE_ASSETS_MANIFEST!);
 };
 syncLoadAssets();
 
 export const server = express()
   .disable('x-powered-by')
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
@@ -56,7 +64,7 @@ export const server = express()
         params: { req, res },
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     const context = {};
@@ -104,7 +112,7 @@ function htmlStart(assetsCss: string, assetsJs: string) {
         <div id="root">`;
 }
 
-function htmlEnd(storesValues: {}): string {
+function htmlEnd(storesValues: Record<string, unknown>): string {
   return `</div>
         <script>
           window.INITIAL_STATE = ${JSON.stringify(storesValues)}
@@ -113,9 +121,11 @@ function htmlEnd(storesValues: {}): string {
 </html>`;
 }
 
-function lookupStartEvent<P, E>(match: MatchedRoute<P>): Event<E> | undefined {
+function lookupStartEvent<P>(
+  match: MatchedRoute<P>,
+): Event<Record<string, string>> | undefined {
   if (match.route.component) {
-    return match.route.component[START];
+    return getStart(match.route.component);
   }
   return undefined;
 }

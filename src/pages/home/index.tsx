@@ -2,20 +2,17 @@ import * as React from 'react';
 import { useEvent, useStore } from 'effector-react/ssr';
 import styled from 'styled-components';
 
-import { assignStart } from 'lib/effector';
+import { useStart, withStart } from 'lib/page-routing';
 import * as model from './model';
 
-export const HomePage = () => {
-  const pageLoaded = useEvent(model.pageLoaded);
+export const HomePage = withStart(model.pageLoaded, () => {
+  useStart(model.pageLoaded);
+
   const increment = useEvent(model.incrementClicked);
   const reset = useEvent(model.resetClicked);
 
   const counterValue = useStore(model.$counterValue);
   const pagePending = useStore(model.$pagePending);
-
-  React.useEffect(() => {
-    pageLoaded({});
-  }, [pageLoaded]);
 
   return (
     <section>
@@ -31,9 +28,7 @@ export const HomePage = () => {
       </div>
     </section>
   );
-};
-
-assignStart(HomePage, model.pageLoaded);
+});
 
 const Button = styled.button`
   background-color: transparent;

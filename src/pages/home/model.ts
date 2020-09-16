@@ -3,7 +3,7 @@ import { createEffect, createEvent, createStore, guard } from 'effector-root';
 
 type ButtonClick = React.MouseEvent<HTMLButtonElement>;
 
-export const pageLoaded = createEvent<Record<string, string>>();
+export const pageLoaded = createEvent<Record<string, unknown>>();
 export const incrementClicked = createEvent<ButtonClick>();
 export const resetClicked = createEvent<ButtonClick>();
 

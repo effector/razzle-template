@@ -10,7 +10,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { fork, serialize, allSettled } from 'effector/fork';
 import { root, forward, Event } from 'effector-root';
 
-import { getStart } from 'lib/effector';
+import { getStart, StartParams } from 'lib/page-routing';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
@@ -21,27 +21,33 @@ const serverStarted = root.createEvent<{
 
 const requestHandled = serverStarted.map(({ req }) => req);
 
-const routesMatched = requestHandled.map((req) =>
-  matchRoutes(ROUTES, req.url).filter(lookupStartEvent),
-);
+const routesMatched = requestHandled.map((req) => ({
+  routes: matchRoutes(ROUTES, req.path).filter(lookupStartEvent),
+  query: req.query,
+}));
 
 for (const { component } of ROUTES) {
   const startPageEvent = getStart(component);
+  if (!startPageEvent) continue;
 
-  if (startPageEvent) {
-    const matchedRoute = routesMatched.filterMap(
-      (routes) =>
-        routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
-    );
+  const matchedRoute = routesMatched.filterMap(({ routes, query }) => {
+    const route = routes.find(routeWithEvent(startPageEvent));
+    if (route) return { route, query };
+    return undefined;
+  });
 
-    forward({
-      from: matchedRoute.map((route) => route.match.params),
-      to: startPageEvent,
-    });
-  }
+  forward({
+    from: matchedRoute.map(({ route }) => route.match.params),
+    to: startPageEvent,
+  });
 }
 
-let assets: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+let assets: {
+  client: {
+    css: string;
+    js: string;
+  };
+};
 
 const syncLoadAssets = () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -85,12 +91,16 @@ export const server = express()
     stream.pipe(res, { end: false });
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
-      sheet.seal();
+      cleanUp();
       console.info(
         '[PERF] sent page at %sms',
         (performance.now() - timeStart).toFixed(2),
       );
     });
+
+    function cleanUp() {
+      sheet.seal();
+    }
   });
 
 function htmlStart(assetsCss: string, assetsJs: string) {
@@ -123,9 +133,15 @@ function htmlEnd(storesValues: Record<string, unknown>): string {
 
 function lookupStartEvent<P>(
   match: MatchedRoute<P>,
-): Event<Record<string, string>> | undefined {
+): Event<StartParams> | undefined {
   if (match.route.component) {
     return getStart(match.route.component);
   }
   return undefined;
+}
+
+function routeWithEvent(event: Event<StartParams>) {
+  return function <P>(route: MatchedRoute<P>) {
+    return lookupStartEvent(route) === event;
+  };
 }

@@ -1,6 +1,6 @@
 declare module '*.svg' {
-  const content: any;
+  const content: React.FC;
   export default content;
 }
 
-declare const INITIAL_STATE: {};
+declare let INITIAL_STATE: Record<string, unknown>;

@@ -14,6 +14,7 @@ yarn start
 ```
 
 - Use `import {} from "effector-root"` instead of `"effector"`. All units should be created in the root domain.
+- Use `createStart`, `withStart` and `useStart` from `page-routing.ts` for pages start events.
 
 ## Structure
 

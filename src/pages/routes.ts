@@ -1,9 +1,11 @@
+import { RouteConfig } from 'react-router-config';
+
 import { paths } from './paths';
 
 import { HomePage } from './home';
 import { Error404Page } from './error404';
 
-export const ROUTES = [
+export const ROUTES: RouteConfig[] = [
   {
     path: paths.home(),
     exact: true,

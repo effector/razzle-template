@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Event, createEvent } from 'effector';
+import { Event, createEvent } from 'effector-root';
 import { useEvent } from 'effector-react/ssr';
 import { useParams, useLocation } from 'react-router';
 
@@ -20,21 +20,17 @@ export function createStart(...params: string[]): Event<StartParams> {
 /**
  * Loads start event on browser side and pass params and query
  */
-export function useStart(
-  startEvent: Event<Record<string, unknown>>,
-  endEvent?: Event<void>,
-) {
+export function useStart(startEvent: Event<StartParams>) {
   const params = useParams();
   const location = useLocation();
   const query = React.useMemo(
-    () => Object.fromEntries(new URLSearchParams(location.search).entries()),
+    () => Object.fromEntries(new URLSearchParams(location.search)),
     [location.search],
   );
   const start = useEvent(startEvent);
 
   React.useEffect(() => {
     start({ params, query });
-    return () => (endEvent ? endEvent() : undefined);
   }, []);
 }
 
@@ -49,7 +45,7 @@ export function getStart<T>(component: T): undefined | Event<StartParams> {
  * Assign start event to component
  */
 export function withStart<P extends Record<string, unknown>>(
-  event: Event<Record<string, unknown>>,
+  event: Event<StartParams>,
   component: React.FC<P>,
 ): React.FC<P> {
   component[START] = event;

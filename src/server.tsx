@@ -37,7 +37,7 @@ for (const { component } of ROUTES) {
   });
 
   forward({
-    from: matchedRoute.map(({ route }) => route.match.params),
+    from: matchedRoute.map(({ route, query }) => ({ params: route.match.params, query })),
     to: startPageEvent,
   });
 }

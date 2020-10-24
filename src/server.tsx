@@ -23,7 +23,7 @@ const requestHandled = serverStarted.map(({ req }) => req);
 
 const routesMatched = requestHandled.map((req) => ({
   routes: matchRoutes(ROUTES, req.path).filter(lookupStartEvent),
-  query: req.query,
+  query: Object.fromEntries(new URL(req.originalUrl).searchParams),
 }));
 
 for (const { component } of ROUTES) {

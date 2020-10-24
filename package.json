@@ -12,6 +12,9 @@
     "commit": "git-cz",
     "lint": "eslint --fix ./src"
   },
+  "engines": {
+    "node": "^14.0.0"
+  },
   "dependencies": {
     "cross-fetch": "^3.0.6",
     "effector": "^21.5.0",

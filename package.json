@@ -13,7 +13,7 @@
     "lint": "eslint --fix ./src"
   },
   "engines": {
-    "node": "^14.0.0"
+    "node": ">=14.0.0 <=15.2.0"
   },
   "dependencies": {
     "cross-fetch": "^3.0.6",

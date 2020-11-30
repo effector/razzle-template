@@ -24,6 +24,9 @@ categories:
 
   - title: '🏎 Optimizations'
     label: 'optimizations'
+  
+  - title: '⚙️ Dependencies'
+    label: 'dependencies'
 
 version-resolver:
   major:

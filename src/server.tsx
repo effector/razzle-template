@@ -22,7 +22,7 @@ const serverStarted = root.createEvent<{
 const requestHandled = serverStarted.map(({ req }) => req);
 
 const routesMatched = requestHandled.map((req) => {
-  const { url } = new Request(req.originalUrl);
+  const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
   return {
     routes: matchRoutes(ROUTES, req.path).filter(lookupStartEvent),
     query: Object.fromEntries(new URL(url).searchParams),

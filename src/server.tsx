@@ -21,10 +21,13 @@ const serverStarted = root.createEvent<{
 
 const requestHandled = serverStarted.map(({ req }) => req);
 
-const routesMatched = requestHandled.map((req) => ({
-  routes: matchRoutes(ROUTES, req.path).filter(lookupStartEvent),
-  query: Object.fromEntries(new URL(req.originalUrl).searchParams),
-}));
+const routesMatched = requestHandled.map((req) => {
+  const url = `${req.protocol}://${req.hostname}${req.originalUrl}`;
+  return {
+    routes: matchRoutes(ROUTES, req.path).filter(lookupStartEvent),
+    query: Object.fromEntries(new URL(url).searchParams),
+  };
+});
 
 for (const { component } of ROUTES) {
   const startPageEvent = getStart(component);
@@ -37,7 +40,10 @@ for (const { component } of ROUTES) {
   });
 
   forward({
-    from: matchedRoute.map(({ route, query }) => ({ params: route.match.params, query })),
+    from: matchedRoute.map(({ route, query }) => ({
+      params: route.match.params,
+      query,
+    })),
     to: startPageEvent,
   });
 }
